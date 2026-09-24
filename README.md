@@ -175,3 +175,106 @@ The automated tests verify:
 3. An incorrect argument type is rejected.
 4. An empty argument value is rejected.
 
+---
+
+## Task 3 — Tool Failure
+
+### Objective
+
+The objective of this task is to handle tool execution failures safely and predictably.
+
+The implementation distinguishes between transient failures, which may be retried, and permanent failures, which should fail immediately.
+
+### Implementation
+
+Task 3 introduces two custom failure types:
+
+```python
+TransientToolError
+PermanentToolError
+```
+
+The `lookup_order` tool can now demonstrate three behaviors:
+
+* Successful execution
+* Temporary failure
+* Permanent failure
+
+The execution is wrapped using:
+
+```python
+run_with_retry()
+```
+
+This function retries only transient failures and stops after a fixed retry limit.
+
+Argument validation from Task 2 is also reused before tool execution.
+
+### Happy Path
+
+A valid order lookup is executed.
+
+This proves that the tool completes normally without unnecessary retries.
+
+### Transient Failure Path
+
+The following input is used to simulate a temporary tool failure:
+
+```python
+{"order_id": "TEMP_FAIL"}
+```
+
+The error is classified as a `TransientToolError`. Because transient failures may recover, the operation is retried.
+
+
+### Permanent Failure Path
+
+The following input is used to simulate a permanent failure:
+
+```python
+{"order_id": "PERM_FAIL"}
+```
+
+This raises a `PermanentToolError`.
+
+Permanent failures are not retried. This prevents unnecessary retry attempts for failures that are not expected to recover.
+
+### Retry Strategy
+
+The implementation follows the assessment requirement that only classified transient failures should be retried.
+
+The retry configuration is:
+
+```text
+Maximum retries: 2
+Backoff delay: 0.1 seconds
+```
+
+A small backoff is added between retries to avoid immediately repeating a failed operation.
+
+The automated tests use a zero-second backoff so that the test suite runs quickly while checking the same retry behavior.
+
+### Run Command
+
+Run the implementation from the project root:
+
+```bash
+python tool_failure.py
+```
+
+### Automated Tests
+
+Run:
+
+```bash
+pytest tests/test_tool_failure.py -v
+```
+
+The automated tests verify:
+
+1. Successful tool execution.
+2. A transient failure is retried.
+3. The retry limit is enforced.
+4. A permanent failure is not retried.
+
+

@@ -1,0 +1,22 @@
+=== TOOL FAILURE DEMO ===
+
+Happy path:
+Attempt 1
+Completed after 1 attempt(s)
+Result: packed
+
+Transient failure path:
+Attempt 1
+Transient failure: Temporary service failure
+Retrying...
+Attempt 2
+Transient failure: Temporary service failure
+Retrying...
+Attempt 3
+Retry limit reached
+Final failure: Temporary service failure
+
+Permanent failure path:
+Attempt 1
+Permanent failure detected - no retry
+Rejected: Permanent tool failure

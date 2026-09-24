@@ -1,0 +1,12 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Hurshita Gupta\OneDrive\Desktop\build_integrate_tools\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Hurshita Gupta\OneDrive\Desktop\build_integrate_tools
+configfile: pyproject.toml
+collecting ... collected 3 items
+
+tests/test_tool_failure.py::test_tool_success PASSED                     [ 33%]
+tests/test_tool_failure.py::test_transient_failure_retries_then_fails PASSED [ 66%]
+tests/test_tool_failure.py::test_permanent_failure_is_not_retried PASSED [100%]
+
+============================== 3 passed in 0.05s ==============================
