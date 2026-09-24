@@ -277,4 +277,121 @@ The automated tests verify:
 3. The retry limit is enforced.
 4. A permanent failure is not retried.
 
+---
 
+## Task 4 — Authority Boundary
+
+### Objective
+
+The objective of this task is to enforce an authority boundary around a tool that performs a side effect.
+
+The implementation uses an order cancellation tool because cancellation changes system state and should not be allowed without explicit authorization.
+
+The task demonstrates authorization, idempotency, audit logging, validation, and rejection of unauthorized actions.
+
+### Implementation
+
+The task introduces a `cancel_order()` function that requires:
+
+```python
+order_id
+authorized
+request_id
+```
+
+The tool only performs the cancellation when authorization is explicitly granted.
+
+Before changing any state, the tool checks:
+
+* That `order_id` is present.
+* That `request_id` is present.
+* That the action is authorized.
+* That the same request has not already been processed.
+* That the requested order exists.
+
+This creates a clear authority boundary around the side-effecting operation.
+
+### Happy Path
+
+An authorized cancellation request is executed.
+
+This proves that an authorized request is allowed to perform the side effect.
+
+### Unauthorized Path
+
+An unauthorized request is executed. The order remains unchanged.
+
+### Idempotency
+
+The implementation uses `request_id` to prevent duplicate processing.
+
+This protects the system from repeated side effects caused by retries or duplicate requests.
+
+### Audit Logging
+
+Important actions are recorded in an in-memory audit log.
+
+The audit log records:
+
+* Successful cancellation
+* Unauthorized attempts
+* Duplicate requests
+* Rejected requests for unknown orders
+
+Each entry contains:
+
+```text
+timestamp
+event
+order_id
+message
+```
+
+This provides reviewable evidence of what action occurred and why.
+
+### Run Command
+
+Run the implementation from the project root:
+
+```bash
+python authority_boundary.py
+```
+
+The output demonstrates:
+
+* Authorized cancellation
+* Duplicate request handling
+* Unauthorized rejection
+* Audit log entries
+
+### Automated Tests
+
+Run:
+
+```bash
+pytest tests/test_authority_boundary.py -v
+```
+
+The automated tests verify:
+
+1. An authorized cancellation succeeds.
+2. An unauthorized cancellation is rejected.
+3. Duplicate requests are handled idempotently.
+4. Successful actions are recorded in the audit log.
+
+### Measurement and Traceability
+
+The implementation provides measurable and traceable evidence through:
+
+* Number of audit log entries
+* Recorded event types
+* Processed request IDs
+* Order state before and after cancellation
+
+The audit trail makes it possible to determine whether an action was:
+
+```text
+cancelled
+duplicate
+rejected
+```

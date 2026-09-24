@@ -1,0 +1,15 @@
+=== AUTHORITY BOUNDARY DEMO ===
+
+Happy path:
+Result: cancelled
+
+Duplicate request:
+Result: already processed
+
+Unauthorized path:
+Rejected: Cancellation requires authorization
+
+Audit log:
+{'timestamp': '2026-09-24T17:30:34', 'event': 'cancelled', 'order_id': 'A100', 'message': 'Order cancelled successfully'}
+{'timestamp': '2026-09-24T17:30:34', 'event': 'duplicate', 'order_id': 'A100', 'message': 'Duplicate cancellation request ignored'}
+{'timestamp': '2026-09-24T17:30:34', 'event': 'rejected', 'order_id': 'A101', 'message': 'Unauthorized cancellation attempt'}
