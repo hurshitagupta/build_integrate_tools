@@ -87,3 +87,91 @@ The tests cover:
 1. Successful invocation of a registered tool.
 2. Rejection of an unknown tool.
 
+---
+
+## Task 2 — Argument Validation
+
+### Objective
+
+The objective of this task is to validate tool arguments before the tool is executed.
+
+The implementation demonstrates the idea of **schema before execution** by checking that the required argument is present, has the correct type, and contains a valid value.
+
+### Implementation
+
+Task 2 builds on the tool structure introduced in Task 1.
+
+The `lookup_order` tool now validates its input using:
+
+```python
+validate_order_args(args)
+```
+
+The validation checks that:
+
+* `order_id` is present.
+* `order_id` is a string.
+* `order_id` is not empty.
+
+Only after these checks pass is the actual order lookup performed.
+
+This prevents malformed or invalid arguments from reaching the tool operation.
+
+### Happy Path
+
+A valid argument is passed to the tool: This confirms that valid arguments are accepted and the tool executes normally.
+
+### Failure Paths
+
+The implementation demonstrates three rejected inputs.
+
+#### Missing Argument
+
+```python
+{}
+```
+
+#### Incorrect Type
+
+```python
+{"order_id": 100}
+```
+
+#### Empty Value
+
+```python
+{"order_id": ""}
+```
+
+These examples prove that argument validation happens before the actual tool operation.
+
+### Run Command
+
+Run the implementation from the project root:
+
+```bash
+python argument_validation.py
+```
+
+The saved output demonstrates:
+
+* Successful validation and execution.
+* Rejection of a missing required argument.
+* Rejection of an incorrect argument type.
+* Rejection of an empty argument value.
+
+### Automated Tests
+
+Run:
+
+```bash
+pytest tests/test_argument_validation.py -v
+```
+
+The automated tests verify:
+
+1. Valid arguments are accepted.
+2. A missing required argument is rejected.
+3. An incorrect argument type is rejected.
+4. An empty argument value is rejected.
+

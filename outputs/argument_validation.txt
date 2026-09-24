@@ -1,0 +1,14 @@
+=== ARGUMENT VALIDATION DEMO ===
+
+Happy path:
+Arguments: {'order_id': 'A100'}
+Result: packed
+
+Failure path - missing argument:
+Rejected: Missing required argument: order_id
+
+Failure path - wrong type:
+Rejected: order_id must be a string
+
+Failure path - empty value:
+Rejected: order_id cannot be empty
