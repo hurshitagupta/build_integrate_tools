@@ -1,0 +1,12 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Hurshita Gupta\OneDrive\Desktop\build_integrate_tools\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Hurshita Gupta\OneDrive\Desktop\build_integrate_tools
+configfile: pyproject.toml
+collecting ... collected 3 items
+
+tests/test_tool_trace.py::test_successful_tool_call_is_traced PASSED     [ 33%]
+tests/test_tool_trace.py::test_failed_tool_call_is_traced PASSED         [ 66%]
+tests/test_tool_trace.py::test_trace_contains_execution_time PASSED      [100%]
+
+============================== 3 passed in 0.06s ==============================

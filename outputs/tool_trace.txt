@@ -1,0 +1,15 @@
+=== TOOL TRACE DEMO ===
+
+Happy path:
+Result: packed
+
+Failure path:
+Rejected: Missing required argument: order_id
+
+Trace log:
+{'event': 'tool_start', 'tool': 'lookup_order', 'args': {'order_id': 'A100'}}
+{'event': 'tool_success', 'tool': 'lookup_order', 'result': 'packed', 'duration_ms': 0.007}
+{'event': 'tool_start', 'tool': 'lookup_order', 'args': {}}
+{'event': 'tool_error', 'tool': 'lookup_order', 'error': 'Missing required argument: order_id', 'duration_ms': 0.022}
+
+Total trace events: 4

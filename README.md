@@ -395,3 +395,147 @@ cancelled
 duplicate
 rejected
 ```
+
+---
+
+## Task 5 — Tool Trace
+
+### Objective
+
+The objective of this task is to make tool execution traceable.
+
+The implementation records the start of each tool call, whether it succeeds or fails, the result or error, and the execution duration.
+
+This provides observable evidence for both successful and failed tool executions.
+
+### Implementation
+
+Task 5 introduces a tracing wrapper:
+
+```python
+trace_tool_call()
+```
+
+The wrapper executes an existing tool while recording trace events in:
+
+```python
+TRACE_LOG
+```
+
+The `lookup_order` tool from Task 2 is reused so that validation and tool behavior are not duplicated.
+
+Each tool call records a `tool_start` event before execution.
+
+If the tool succeeds, a `tool_success` event is recorded.
+
+If the tool fails, a `tool_error` event is recorded and the original exception is re-raised.
+
+### Happy Path
+
+A valid tool call is executed using:
+
+```python
+trace_tool_call(
+    tool_name="lookup_order",
+    tool_function=lookup_order,
+    args={"order_id": "A100"},
+)
+```
+
+The trace contains:
+
+```text
+tool_start
+tool_success
+```
+
+The successful trace also includes the result and execution duration.
+
+### Failure Path
+
+The failure path passes an invalid argument:
+
+```python
+{}
+```
+
+The existing argument validation from Task 2 rejects the request because `order_id` is missing.
+
+
+The trace records:
+
+```text
+tool_start
+tool_error
+```
+
+The failure is recorded without hiding the original exception.
+
+### Trace Information
+
+Each trace provides information about the tool execution.
+
+A start event records:
+
+* Event type
+* Tool name
+* Arguments
+
+A success event records:
+
+* Event type
+* Tool name
+* Result
+* Execution duration in milliseconds
+
+A failure event records:
+
+* Event type
+* Tool name
+* Error message
+* Execution duration in milliseconds
+
+### Measurement
+
+The implementation records:
+
+* Execution duration in milliseconds
+* Total number of trace events
+* Successful and failed execution events
+
+For the demonstration containing one successful call and one failed call, four trace events are generated:
+
+```text
+tool_start
+tool_success
+tool_start
+tool_error
+```
+
+
+### Run Command
+
+Run the implementation from the project root:
+
+```bash
+python tool_trace.py
+```
+
+### Automated Tests
+
+Run:
+
+```bash
+pytest tests/test_tool_trace.py -v
+```
+
+The automated tests verify:
+
+1. A successful tool call creates `tool_start` and `tool_success` events.
+2. A failed tool call creates `tool_start` and `tool_error` events.
+3. Successful trace records include execution duration.
+
+
+
+
+
