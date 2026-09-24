@@ -1,0 +1,10 @@
+=== TOOL REGISTRY DEMO ===
+Registered tools: ['lookup_order']
+Tool count: 1
+
+Happy path:
+Result: packed
+Execution time: 0.027 ms
+
+Failure path:
+Rejected: Tool 'unknown_tool' is not registered

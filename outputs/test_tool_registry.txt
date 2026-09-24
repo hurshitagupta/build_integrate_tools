@@ -1,0 +1,11 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Hurshita Gupta\OneDrive\Desktop\build_integrate_tools\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Hurshita Gupta\OneDrive\Desktop\build_integrate_tools
+configfile: pyproject.toml
+collecting ... collected 2 items
+
+tests/test_tool_registry.py::test_registered_tool_invocation_success PASSED [ 50%]
+tests/test_tool_registry.py::test_unknown_tool_is_rejected PASSED        [100%]
+
+============================== 2 passed in 0.04s ==============================
